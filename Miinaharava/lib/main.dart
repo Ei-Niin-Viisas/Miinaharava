@@ -363,7 +363,7 @@ class _MineSweeperState extends State<MineSweeper>{
         Navigator.pushNamed(context, '/havioruutu');
       });
     }
-    else if ((avatut >= (rivit*sarakkeet)-pommien_lkm-120) && !havitty) {
+    else if ((avatut >= (rivit*sarakkeet)-pommien_lkm) && !havitty) {
       final playerNameModel = context.read<PlayerNameModel>();
       ajastin?.cancel();
       lahetaAikaPalvelimelle(kuluneetSekunnit, playerNameModel.name);    
