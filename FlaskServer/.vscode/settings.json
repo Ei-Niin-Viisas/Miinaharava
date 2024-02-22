@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/dc5ab8fc-29f3-442a-b5e3-6d6ca3dfb645/resourceGroups/appsvc_linux_centralus_basic/providers/Microsoft.Web/sites/parasFlaskServer",
+    "appService.deploySubpath": "."
+}
