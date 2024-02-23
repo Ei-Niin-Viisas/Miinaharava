@@ -35,7 +35,7 @@ Future<void> lahetaAikaPalvelimelle(int sekunnit, String pelaaja) async {
 
 Future<List<dynamic>?> haeKeskiarvoPalvelimelta() async {
   var uri = Uri.http('parasflaskserver.azurewebsites.net', 'hae_nopeimmat_ajat');
-
+ 
   try {
     final vastaus = await http.get(uri);
     
@@ -363,7 +363,7 @@ class _MineSweeperState extends State<MineSweeper>{
         Navigator.pushNamed(context, '/havioruutu');
       });
     }
-    else if ((avatut >= (rivit*sarakkeet)-pommien_lkm) && !havitty) {
+    else if ((avatut == (rivit*sarakkeet)-pommien_lkm) && !havitty) {
       final playerNameModel = context.read<PlayerNameModel>();
       ajastin?.cancel();
       lahetaAikaPalvelimelle(kuluneetSekunnit, playerNameModel.name);    
@@ -488,20 +488,20 @@ class MyHome extends StatelessWidget {
         },
         child: Container(
           color: Colors.blueGrey,
-          child: ArviointiNakyma(),
+          child: LeaderboardNakyma(),
         ),
       ),
     );
   }
 }
 
-class ArviointiNakyma extends StatefulWidget {
+class LeaderboardNakyma extends StatefulWidget {
   @override
-  _ArviointiNakymaTila createState() => _ArviointiNakymaTila();
+  _LeaderboardNakyma createState() => _LeaderboardNakyma();
 }
 
 
-class _ArviointiNakymaTila extends State<StatefulWidget> {
+class _LeaderboardNakyma extends State<StatefulWidget> {
   @override
   Widget build(BuildContext context) {
     return Center(

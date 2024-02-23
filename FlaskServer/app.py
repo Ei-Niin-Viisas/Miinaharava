@@ -4,14 +4,23 @@ from flask import (Flask, redirect, render_template, request,
                    send_from_directory, url_for,jsonify)
 
 from flask_cors import CORS
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 CORS(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mydatabase.db'
+db = SQLAlchemy(app)
 
 pisteet__data = []
 
+class DataPiste(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    time = db.Column(db.Integer, nullable=False)
+    player = db.Column(db.String(120), nullable=False)
+
 @app.route('/')
 def index():
+   db.create_all()
    print('Request for index page received')
    return render_template('index.html')
 
@@ -39,8 +48,13 @@ def laheta_pisteet():
         aika = data['aika']
         pelaaja = data['pelaaja']
 
+        new_data_piste = DataPiste(time = str(aika), player = str(pelaaja))
+
         if aika is None:
             return jsonify({"error":"Väärää dataa"}), 400
+        
+        db.session.add(new_data_piste)
+        db.session.commit()
         
         if len(pisteet__data) != 0:
             for i in range(len(pisteet__data)):
@@ -66,13 +80,11 @@ def hae_nopeimmat_ajat():
         
         lista = []
 
-        kierrokset = len(pisteet__data)
-        if kierrokset > 10:
-            kierrokset = 10
+        all_data = DataPiste.query.order_by(DataPiste.time).limit(10).all()
         
-        for i in range(kierrokset):
-            pelaaja:str = pisteet__data[i][0]
-            aika:int = pisteet__data[i][1]
+        for rivi in all_data:
+            pelaaja = rivi.player
+            aika:int = rivi.time
             minuutit, sekunnit = divmod(aika, 60)
             sanakirja = {"pelaaja" : str(pelaaja), "aika" : F"Aika {minuutit} minuuttia ja {sekunnit} sekuntia"}
             lista.append(sanakirja)
